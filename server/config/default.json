@@ -1,0 +1,5 @@
+{
+  "serverPort" : 3002,
+  "dbUrl": "mongodb://localhost:27017/",
+  "secretKey": "elmar-vkr-secret-key"
+}
