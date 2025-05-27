@@ -14,7 +14,7 @@ router.post('/registration',
     check('email', "Uncorrect email").isEmail(),
     check('password', 'Password must be longer than 3 and shorter than 12').isLength({min:3, max:12})
   ],
-  async (req: Request, res: Response) => {
+  async (req: Request, res: Response): Promise<any> => {
     try {
       const errors = validationResult(req)
       if (!errors.isEmpty()) {
@@ -22,7 +22,7 @@ router.post('/registration',
       }
       const {email, password} = req.body
       const candidate = await User.findOne({email})
-      if(candidate) {
+      if (candidate) {
         return res.status(400).json({message: `User with email ${email} already exist`})
       }
       const hashPassword = await bcrypt.hash(password, 8)
@@ -39,7 +39,7 @@ router.post('/registration',
 
 
 router.post('/login',
-  async (req, res) => {
+  async (req, res): Promise<any> => {
     try {
       const {email, password} = req.body
       const user = await User.findOne({email})
@@ -50,6 +50,7 @@ router.post('/login',
       if (!isPassValid) {
         return res.status(400).json({message: "Invalid password"})
       }
+      // @ts-ignore
       const token = jwt.sign({id: user.id}, config.get("secretKey"), {expiresIn: "1h"})
       return res.json({
         token,
@@ -68,11 +69,16 @@ router.post('/login',
   })
 
 router.get('/auth', authMiddleware,
-  async (req, res) => {
+  async (req, res): Promise<any> => {
     try {
+      // @ts-ignore
       const user = await User.findOne({_id: req.user.id})
+      if (!user) {
+        return res.status(400).json({message: "errror"})
+      }
+      // @ts-ignore
       const token = jwt.sign({id: user.id}, config.get("secretKey"), {expiresIn: "1h"})
-      return res.json({
+      res.json({
         token,
         user: {
           id: user.id,

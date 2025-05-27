@@ -8,19 +8,22 @@ export const authMiddleware = (req: Request<{user: any}, {user: any}>, res: Resp
   }
   const authorization = req.headers.authorization;
   if (!authorization) {
-    return res.status(401).json({message: 'Auth error'})
+    res.status(401).json({message: 'Auth error'})
+    return
   }
 
   try {
     const token = authorization.split(' ')[1]
     if (!token) {
-      return res.status(401).json({message: 'Auth error'})
+      res.status(401).json({message: 'Auth error'})
+      return
     }
     const decoded = jwt.verify(token, config.get('secretKey'))
     // @ts-ignore
     req.user = decoded
     next()
   } catch (e) {
-    return res.status(401).json({message: 'Auth error'})
+    res.status(401).json({message: 'Auth error'})
+    return
   }
 }

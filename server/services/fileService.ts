@@ -1,10 +1,10 @@
 import fs from 'fs'
-import {File} from '../models/File'
+import {File, IFile} from '../models/File'
 import config from 'config'
 
 class FileService {
 
-  createDir(file: File) {
+  createDir(file: IFile) {
     // @ts-ignore
     const filePath = `${config.get('filePath')}\\${file.user}\\${file.path}`
     return new Promise(((resolve, reject) => {
@@ -21,7 +21,7 @@ class FileService {
     }))
   }
 
-  deleteFile(file: File) {
+  deleteFile(file: IFile) {
     const path = this.getPath(file)
     if (file.type === 'dir') {
       fs.rmdirSync(path)
@@ -30,8 +30,7 @@ class FileService {
     }
   }
 
-  getPath(file: File) {
-    // @ts-ignore
+  getPath(file: IFile) {
     return config.get('filePath') + '\\' + file.user + '\\' + file.path
   }
 }
