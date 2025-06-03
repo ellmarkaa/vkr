@@ -4,9 +4,15 @@
     border-radius: 8px;
     outline: none;
     font-size: 14px;
+    border: none;
 }
 
 .input::placeholder {
     font-weight: 500;
     opacity: 0.3;
+    font-size: 14px;
+}
+
+.input:focus-within {
+    border: 1px solid #497FFF;
 }

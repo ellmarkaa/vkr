@@ -14,7 +14,7 @@ export const Header: FC<Props> = ({}) => {
         Облачное хранилище
       </h1>
 
-      <Input placeholder="Поиск" style={{maxWidth: 540, height: 32, width: '100%'}} />
+      <Input placeholder="Поиск" style={{maxWidth: 540, width: '100%'}} />
 
       <div>
         <Button>

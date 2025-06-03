@@ -3,7 +3,8 @@ import axios from 'axios';
 import {IUser} from "../app/types";
 import {setUser} from "../slices/userSlice"; // если экспортируешь User интерфейс
 
-const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/';
+// const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/';
+const API_URL = 'http://localhost:5000/';
 
 interface AuthResponse {
     user: IUser;
