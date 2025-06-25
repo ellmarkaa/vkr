@@ -4,7 +4,7 @@ import {IUser} from "../app/types";
 import {setUser} from "../slices/userSlice"; // если экспортируешь User интерфейс
 
 // const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/';
-const API_URL = 'http://localhost:5000/';
+const API_URL = 'http://localhost:3002/';
 
 interface AuthResponse {
     user: IUser;
@@ -51,7 +51,7 @@ export const auth = createAsyncThunk<void>(
     'user/auth',
     async (_, { dispatch }) => {
         try {
-            const response = await axios.get<AuthResponse>(`${API_URL}api/auth/auth`, {
+            const response = await axios.get<AuthResponse>(`${API_URL}api/auth`, {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem('token')}`
                 }

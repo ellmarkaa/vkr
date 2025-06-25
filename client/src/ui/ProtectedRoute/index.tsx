@@ -3,16 +3,16 @@ import {useAppSelector} from "../../hooks/store";
 import {Navigate} from "react-router-dom";
 
 type Props = {
-    children: ReactNode;
+  children: ReactNode;
 };
 
 export const ProtectedRoute: FC<Props> = ({ children }) => {
-    const isAuth = useAppSelector(state => state.user.isAuth); // Use typed selector
+  const isAuth = useAppSelector(state => state.user.isAuth); // Use typed selector
 
-    if (!isAuth) {
-        // Redirect to login if not authenticated
-        return <Navigate to="/login" replace />;
-    }
+  if (!isAuth) {
+    // Redirect to login if not authenticated
+    return <Navigate to="/login" replace />;
+  }
 
-    return <>{children}</>;
+  return <>{children}</>;
 };

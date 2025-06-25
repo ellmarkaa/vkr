@@ -2,37 +2,37 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import {registration} from "../actions/userActions";
 
 interface User {
-    id?: string;
-    email?: string;
-    // другие поля, если есть
+  id?: string;
+  email?: string;
+  // другие поля, если есть
 }
 
 interface UserState {
-    currentUser: User;
-    isAuth: boolean;
+  currentUser: User;
+  isAuth: boolean;
 }
 
 const initialState: UserState = {
-    currentUser: {},
-    isAuth: false,
+  currentUser: {},
+  isAuth: true,
 };
 
 const userSlice = createSlice({
-    name: 'user',
-    initialState,
-    reducers: {
-        setUser: (state, action: PayloadAction<User>) => {
-            state.currentUser = action.payload;
-            state.isAuth = true;
-        },
-        logout: (state) => {
-            state.currentUser = {};
-            state.isAuth = false;
-        },
+  name: 'user',
+  initialState,
+  reducers: {
+    setUser: (state, action: PayloadAction<User>) => {
+      state.currentUser = action.payload;
+      state.isAuth = true;
     },
-    extraReducers: builder => {
+    logout: (state) => {
+      state.currentUser = {};
+      state.isAuth = false;
+    },
+  },
+  extraReducers: builder => {
 
-    }
+  }
 });
 
 export const { setUser, logout } = userSlice.actions;

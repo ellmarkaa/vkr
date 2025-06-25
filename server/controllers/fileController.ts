@@ -11,7 +11,6 @@ class FileController {
   async createDir(req: Request, res: Response) {
     try {
       const {name, type, parent} = req.body
-      // @ts-ignore
       const file = new File<IFile>({name, type, parent, user: req.user.id})
       const parentFile = await File.findOne({_id: parent})
       if(!parentFile) {
@@ -20,7 +19,6 @@ class FileController {
       } else {
         file.path = `${parentFile.path}\\${file.name}`
         await fileService.createDir(file)
-        // @ts-ignore
         parentFile.childs.push(file._id)
         await parentFile.save()
       }
@@ -38,19 +36,15 @@ class FileController {
       let files
       switch (sort) {
         case 'name':
-          // @ts-ignore
           files = await File.find({user: req.user.id, parent: req.query.parent}).sort({name:1})
           break
         case 'type':
-          // @ts-ignore
           files = await File.find({user: req.user.id, parent: req.query.parent}).sort({type:1})
           break
         case 'date':
-          // @ts-ignore
           files = await File.find({user: req.user.id, parent: req.query.parent}).sort({date:1})
           break
         default:
-          // @ts-ignore
           files = await File.find({user: req.user.id, parent: req.query.parent})
           break;
       }
@@ -63,29 +57,22 @@ class FileController {
 
   async uploadFile(req: Request, res: Response) {
     try {
-      // @ts-ignore
       const file = req.files.file
 
-      // @ts-ignore
       const parent = await File.findOne({user: req.user.id, _id: req.body.parent})
-      // @ts-ignore
       const user = await User.findOne({_id: req.user.id})
 
-      // @ts-ignore
       if (user.usedSpace + file.size > user.diskSpace) {
         res.status(400).json({message: 'There no space on the disk'})
         return
       }
 
-      // @ts-ignore
       user.usedSpace = user.usedSpace + file.size
 
       let path;
       if (parent) {
-        // @ts-ignore
         path = `${config.get('filePath')}\\${user._id}\\${parent.path}\\${file.name}`
       } else {
-        // @ts-ignore
         path = `${config.get('filePath')}\\${user._id}\\${file.name}`
       }
 
@@ -93,31 +80,23 @@ class FileController {
         res.status(400).json({message: 'File already exist'})
         return
       }
-      // @ts-ignore
       file.mv(path)
 
-      // @ts-ignore
       const type = file.name.split('.').pop()
-      // @ts-ignore
       let filePath = file.name
       if (parent) {
-        // @ts-ignore
         filePath = parent.path + "\\" + file.name
       }
       const dbFile = new File({
-        // @ts-ignore
         name: file.name,
         type,
-        // @ts-ignore
         size: file.size,
         path: filePath,
         parent: parent?._id,
-        // @ts-ignore
         user: user._id
       });
 
       await dbFile.save()
-      // @ts-ignore
       await user.save()
 
       res.json(dbFile)
@@ -183,7 +162,6 @@ class FileController {
       if (!user) return res.status(401).json({message: 'no user'})
 
       const avatarName = uuid.v4() + ".jpg"
-      // @ts-ignore
       file.mv(config.get('staticPath') + "\\" + avatarName)
       user.avatar = avatarName
       await user.save()
